@@ -1,0 +1,16 @@
+﻿<Window x:Class="MouseMover.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MouseMover"
+        mc:Ignorable="d"
+        Title="MouseMover
+        " Height="111.836" Width="166.938">
+    <Grid>
+        <Label Content="Intervall" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top"/>
+        <Slider x:Name="slInterval" HorizontalAlignment="Left" Margin="24,36,0,0" VerticalAlignment="Top" Minimum="30" Maximum="300" LargeChange="30" Width="84" TickPlacement="TopLeft" TickFrequency="30" ValueChanged="Slider_ValueChanged" SmallChange="30" IsSnapToTickEnabled="True" />
+        <Label x:Name="lblInterval" Content="" HorizontalAlignment="Left" Margin="76,10,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
