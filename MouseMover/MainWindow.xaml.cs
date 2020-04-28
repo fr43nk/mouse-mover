@@ -25,12 +25,13 @@ namespace MouseMover
         public MainWindow()
         {
             InitializeComponent();
-            this.m_timer.Interval = this.slInterval.Value * 1000;
-            this.m_timer.AutoReset = true;
-            this.m_timer.Elapsed += handeTimerEvent;
-            this.m_timer.Enabled = true;
-
-            this.lblInterval.Content = this.slInterval.Value;
+            initTimer();
+            setLabelText();
+#if DEBUG
+            restartTimer(0.1);
+#else
+            restartTimer(30);
+#endif
         }
 
         private void handeTimerEvent(object sender, System.Timers.ElapsedEventArgs e)
@@ -38,7 +39,12 @@ namespace MouseMover
             Point p = GetMousePosition();
             this.SetPosition((int)p.X+3, (int)p.Y+4);
             //this.SetPosition((int)p.X, (int)p.Y);
-            Console.WriteLine("Timer fired");
+
+#if DEBUG
+            this.Dispatcher.Invoke((Action)(() => {
+               Console.WriteLine($"Timer fired {this.slInterval.Value}");
+           }));
+#endif
         }
 
         private void SetPosition(int a, int b)
@@ -69,11 +75,33 @@ namespace MouseMover
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Slider s = sender as Slider;
-            this.m_timer.Enabled = false;
-            this.m_timer.Interval = s.Value * 1000;
-            this.m_timer.Enabled = true;
-            if( this.lblInterval != null )
+            this.restartTimer(s.Value);
+            this.setLabelText();
+        }
+
+
+        private void initTimer()
+        {
+            this.m_timer.AutoReset = true;
+            this.m_timer.Elapsed += handeTimerEvent;
+        }
+
+        private void restartTimer(double interval)
+        {
+            if( interval > 0 && interval != this.m_timer.Interval )
+            {
+                this.m_timer.Enabled = false;
+                this.m_timer.Interval = interval * 1000;
+                this.m_timer.Enabled = true;
+            }
+        }
+
+        private void setLabelText()
+        {
+            if (this.lblInterval != null && this.slInterval != null)
+            {
                 this.lblInterval.Content = $"{this.slInterval.Value}s";
+            }
         }
     }
 }
